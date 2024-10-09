@@ -3,6 +3,7 @@
 ## Задача. Smart StatsView
 ### Описание
 На текущий момент наша Custom View принимает в качестве данных доли:
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/diagram.png)
 
 findViewById<StatsView>(R.id.stats).data = listOf(
     0.25F,
@@ -11,7 +12,7 @@ findViewById<StatsView>(R.id.stats).data = listOf(
     0.25F,
 )
 Что в сумме даёт нам картинку из лекции:
-
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/diagram.png)
 
 Q: что мы хотим?
 
@@ -24,7 +25,7 @@ findViewById<StatsView>(R.id.stats).data = listOf(
     500F,
 )
 Что должно давать такую же картинку, т. к. SmartStatsView просуммирует все данные и определит, что каждый элемент — это ровно 25 %:
-
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/dot.png)
 
 
 ### Результат
