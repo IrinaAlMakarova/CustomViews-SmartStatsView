@@ -1,13 +1,16 @@
 package ru.netology.nmedia.ui
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PointF
 import android.graphics.RectF
+import android.provider.SyncStateContract.Helpers.update
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.core.content.withStyledAttributes
 import ru.netology.nmedia.R
 import ru.netology.nmedia.util.AndroidUtils
@@ -27,6 +30,9 @@ class StatsView @JvmOverloads constructor(
     private var lineWidth = AndroidUtils.dp(context, 5F).toFloat()
     private var fontSize = AndroidUtils.dp(context, 40F).toFloat()
     private var colors = emptyList<Int>()
+
+    private var progress = 0F
+    private var valueAnimator: ValueAnimator? = null
 
     // обработка атрибутов
     init {
@@ -62,7 +68,8 @@ class StatsView @JvmOverloads constructor(
     var data: List<Float> = emptyList()
         set(value) {
             field = value
-            invalidate()
+            //invalidate()
+            update()
         }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -86,12 +93,13 @@ class StatsView @JvmOverloads constructor(
             val angle = ((360F * datum) / (4 * datum)) // угол поворота
             paint.color =
                 colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
-            canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
+            //canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
+            canvas.drawArc(oval, startFrom + 360F*progress, angle*progress, false, paint) // отрисовка дуги
             startFrom += angle // отступ к стартовуму углу поворота
         }
         paint.color =
             colors.getOrNull(0) ?: randomColor()
-        canvas.drawArc(oval, startFrom, -1F, false, paint) // отрисовка дуги
+        canvas.drawArc(oval, startFrom+360*progress, -1F*progress, false, paint) // отрисовка дуги
 
         // отрисовка текста
         canvas.drawText(
@@ -106,4 +114,26 @@ class StatsView @JvmOverloads constructor(
 
     private fun randomColor() =
         Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt()) //генерация случайного цвета
+
+
+    private fun update() {
+        // вычищаем предыдущую анимацию
+        valueAnimator?.let {
+            it.removeAllListeners()
+            it.cancel()
+        }
+        progress = 0F
+
+        valueAnimator = ValueAnimator.ofFloat(0F, 1F).apply {
+            addUpdateListener { anim ->
+                progress = anim.animatedValue as Float
+                invalidate()
+            }
+            duration = 1900
+            interpolator = LinearInterpolator()
+        }.also {
+            it.start()
+        }
+    }
+
 }
