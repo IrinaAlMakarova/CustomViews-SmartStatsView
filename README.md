@@ -46,6 +46,7 @@ findViewById<StatsView>(R.id.stats).data = listOf(
 ## Задача. Rotation
 ### Описание
 Необходимо дополнить реализованную на лекции анимацию поворотом на 360 градусов:
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/Rotetion.gif)
 
 Обратите внимание, что текст остаётся неподвижным.
 
