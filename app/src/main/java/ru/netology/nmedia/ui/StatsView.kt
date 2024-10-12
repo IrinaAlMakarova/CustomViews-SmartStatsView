@@ -44,8 +44,9 @@ class StatsView @JvmOverloads constructor(
     ).apply {
         style = Paint.Style.STROKE // стиль отрисовки (отрисовываем строки)
         strokeWidth = lineWidth // ширина строки
-        strokeCap = Paint.Cap.ROUND // округление линий при их пересечении (обработку начала и конца обводимых линий и контуров)
-        //strokeJoin = Paint.Join.ROUND // округление краев при отрисовке
+        strokeCap =
+            Paint.Cap.ROUND // округление линий при их пересечении (обработку начала и конца обводимых линий и контуров)
+        strokeJoin = Paint.Join.ROUND // округление краев при отрисовке
 
     }
 
@@ -67,7 +68,8 @@ class StatsView @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         radius = min(w, h) / 2F - lineWidth / 2
         center = PointF(w / 2F, h / 2F)
-        oval = RectF( // прямоугольник, область отрисовки
+        oval = RectF(
+            // прямоугольник, область отрисовки
             center.x - radius, center.y - radius,
             center.x + radius, center.y + radius,
         )
@@ -81,11 +83,15 @@ class StatsView @JvmOverloads constructor(
         var startFrom = -90F // стартовый угол
         for ((index, datum) in data.withIndex()) {
             //val angle = 360F * datum // угол поворота
-            val angle = ((180F * datum) / 1000) // угол поворота
-            paint.color = colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
+            val angle = ((360F * datum) / (4 * datum)) // угол поворота
+            paint.color =
+                colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
             canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
             startFrom += angle // отступ к стартовуму углу поворота
         }
+        paint.color =
+            colors.getOrNull(0) ?: randomColor()
+        canvas.drawArc(oval, startFrom, -1F, false, paint) // отрисовка дуги
 
         // отрисовка текста
         canvas.drawText(
@@ -98,5 +104,6 @@ class StatsView @JvmOverloads constructor(
     }
 
 
-    private fun randomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt()) //генерация случайного цвета
+    private fun randomColor() =
+        Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt()) //генерация случайного цвета
 }
