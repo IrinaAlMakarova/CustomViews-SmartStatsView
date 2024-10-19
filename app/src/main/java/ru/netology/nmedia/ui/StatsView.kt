@@ -83,32 +83,120 @@ class StatsView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        if (data.isEmpty()) {
-            return
-        }
+        var taskNomber = 3
+        if (taskNomber == 1) {
+            if (data.isEmpty()) {
+                return
+            }
 
-        var startFrom = -90F // стартовый угол
-        for ((index, datum) in data.withIndex()) {
-            //val angle = 360F * datum // угол поворота
-            val angle = ((360F * datum) / (4 * datum)) // угол поворота
+            var startFrom = -90F // стартовый угол
+            for ((index, datum) in data.withIndex()) {
+                //val angle = 360F * datum // угол поворота
+                val angle = ((360F * datum) / (4 * datum)) // угол поворота
+                paint.color =
+                    colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
+                //canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
+                canvas.drawArc(
+                    oval,
+                    startFrom + 360F * progress,
+                    angle * progress,
+                    false,
+                    paint
+                ) // отрисовка дуги
+                startFrom += angle // отступ к стартовуму углу поворота
+            }
             paint.color =
-                colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
-            //canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
-            canvas.drawArc(oval, startFrom + 360F*progress, angle*progress, false, paint) // отрисовка дуги
-            startFrom += angle // отступ к стартовуму углу поворота
-        }
-        paint.color =
-            colors.getOrNull(0) ?: randomColor()
-        canvas.drawArc(oval, startFrom+360*progress, -1F*progress, false, paint) // отрисовка дуги
+                colors.getOrNull(0) ?: randomColor()
+            canvas.drawArc(oval, startFrom + 360 * progress, -1F, false, paint) // отрисовка дуги
 
-        // отрисовка текста
-        canvas.drawText(
-            //"%.2f%%".format(data.sum() * 100),
-            "%.2f%%".format(data.sum() / 20),
-            center.x,                               // положение текста на экране
-            center.y + textPaint.textSize / 4,   // положение текста на экране
-            textPaint, // кисть
-        )
+            // отрисовка текста
+            canvas.drawText(
+                //"%.2f%%".format(data.sum() * 100),
+                "%.2f%%".format(data.sum() / 20),
+                center.x,                               // положение текста на экране
+                center.y + textPaint.textSize / 4,   // положение текста на экране
+                textPaint, // кисть
+            )
+        }
+        if (taskNomber == 2) {
+            if (data.isEmpty()) {
+                return
+            }
+
+            // отрисовка текста
+            canvas.drawText(
+                //"%.2f%%".format(data.sum() * 100),
+                "%.2f%%".format(data.sum() / 20),
+                center.x,                               // положение текста на экране
+                center.y + textPaint.textSize / 4,   // положение текста на экране
+                textPaint, // кисть
+            )
+
+            var startFrom = -90F // стартовый угол
+            val max = 360F
+            val progressAngel = progress * 360F
+
+            if (progressAngel > max) {
+                for ((index, datum) in data.withIndex()) {
+                    val angle = ((360F * datum) / (4 * datum)) // угол поворота
+                    paint.color = colors.getOrNull(index)
+                        ?: randomColor() // назначим каждому элементу свой цвет
+                    canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
+                    startFrom += angle // отступ к стартовуму углу поворота
+                }
+                return
+            }
+
+            var filled = 0F
+
+            for ((index, datum) in data.withIndex()) {
+                val angle = ((360F * datum) / (4 * datum)) // угол поворота
+                paint.color =
+                    colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
+                canvas.drawArc(
+                    oval,
+                    startFrom,
+                    progressAngel - filled,
+                    false,
+                    paint
+                ) // отрисовка дуги
+                startFrom += angle // отступ к стартовуму углу поворота
+                filled += angle
+                if (filled > progressAngel) return
+            }
+        }
+        if (taskNomber == 3) {
+            if (data.isEmpty()) {
+                return
+            }
+
+            var startFrom = -45F // стартовый угол
+            for ((index, datum) in data.withIndex()) {
+                //val angle = 360F * datum // угол поворота
+                val angle = ((360F * datum) / (4 * datum)) // угол поворота
+                val sweepAngle = angle * progress
+                paint.color =
+                    colors.getOrNull(index) ?: randomColor() // назначим каждому элементу свой цвет
+                //canvas.drawArc(oval, startFrom, angle, false, paint) // отрисовка дуги
+                canvas.drawArc(
+                    oval,
+                    startFrom - sweepAngle / 2,
+                    sweepAngle,
+                    false,
+                    paint
+                ) // отрисовка дуги
+                startFrom += angle // отступ к стартовуму углу поворота
+            }
+
+            // отрисовка текста
+            canvas.drawText(
+                //"%.2f%%".format(data.sum() * 100),
+                "%.2f%%".format(data.sum() / 20),
+                center.x,                               // положение текста на экране
+                center.y + textPaint.textSize / 4,   // положение текста на экране
+                textPaint, // кисть
+            )
+        }
     }
 
 

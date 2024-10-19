@@ -23,9 +23,6 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             500F,
         )
 
-        //view.startAnimation(
-        //    AnimationUtils.loadAnimation(this, R.anim.animation)
-        //)
 
     }
 }
