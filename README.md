@@ -60,8 +60,9 @@ findViewById<StatsView>(R.id.stats).data = listOf(
 ## Задача. Sequential
 ### Описание
 Необходимо реализовать параллельное заполнение данными:
-
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/sequential.png)
 
 ## Задача. Bidirectional
 ### Описание
 Предлагаем дополнить параллельное заполнение данными следующим режимом:
+![](https://github.com/IrinaAlMakarova/CustomViews-SmartStatsView/blob/main/app/src/main/res/layout/pic/Bidirectional.gif)
